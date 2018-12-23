@@ -12,11 +12,11 @@ plugins:
     upnpUuid: 452f54a5-65e9-4251-918d-578923a26612
 serial:
   autoconnect: true
-  baudrate: 0
-  port: AUTO
 server:
   firstRun: true
   seenWizards:
     corewizard: null
     cura: true
     softwareupdate: null
+webcam:
+  ffmpeg: /opt/ffmpeg/ffmpeg
