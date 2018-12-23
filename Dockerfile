@@ -22,7 +22,8 @@ RUN cd /tmp \
 #Install Octoprint
 RUN pip install -e git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint 
 
-RUN useradd -ms /bin/bash -G dialout -d /var/octoprint -r octoprint
+RUN groupadd -g 666 octoprint \
+ && useradd -rNM -s /bin/bash -G dialout -g octoprint -d /var/octoprint -u 666 octoprint
 RUN chown octoprint:octoprint /var/octoprint
 USER octoprint
 
