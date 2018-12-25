@@ -26,6 +26,7 @@ RUN apk update \
 RUN pip install git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint \
  && rm -rf /root/.cache/pip
 
+# switch user
 RUN groupadd -g ${gid} ${name} \
  && useradd -rNm -s /bin/bash -G dialout -g octoprint -d /var/octoprint -u ${uid} ${name}
 RUN chown ${name}:${name} /var/octoprint
