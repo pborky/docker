@@ -12,15 +12,15 @@ WORKDIR /var/octoprint
 # In case of alpine
 RUN apk update \
  && apk upgrade \
- && apk add --no-cache bash git openssh-client gcc linux-headers musl-dev shadow \
+ && apk add --no-cache --update bash git gcc linux-headers musl-dev shadow openssh-client ffmpeg \
  && rm -rf /var/cache/apk/*
 
 #install ffmpeg static
-RUN cd /tmp \
-  && wget -O ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz \
-	&& mkdir -p /opt/ffmpeg \
-	&& tar xvf ffmpeg.tar.xz -C /opt/ffmpeg --strip-components=1 \
-  && rm -Rf /tmp/*
+#RUN cd /tmp \
+# && wget -O ffmpeg.tar.xz https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz \
+#       && mkdir -p /opt/ffmpeg \
+#       && tar xvf ffmpeg.tar.xz -C /opt/ffmpeg --strip-components=1 \
+#  && rm -Rf /tmp/*
 
 #Install Octoprint
 RUN pip install git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint \
@@ -35,6 +35,5 @@ USER ${name}
 RUN mkdir /var/octoprint/.octoprint
 
 VOLUME /var/octoprint/.octoprint
-
 
 CMD ["/usr/local/bin/octoprint", "serve"]
