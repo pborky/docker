@@ -3,6 +3,9 @@ FROM python:2.7-alpine
 EXPOSE 5000
 
 ARG tag=1.3.10
+ARG gid=666
+ARG uid=666
+ARG name=octoprint
 
 WORKDIR /var/octoprint
 
@@ -22,9 +25,10 @@ RUN cd /tmp \
 #Install Octoprint
 RUN pip install -e git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint 
 
-RUN useradd -ms /bin/bash -G dialout -d /var/octoprint -r octoprint
-RUN chown octoprint:octoprint /var/octoprint
-USER octoprint
+RUN groupadd -g ${gid} ${name} \
+ && useradd -rNm -s /bin/bash -G dialout -g octoprint -d /var/octoprint -u ${uid} ${name}
+RUN chown ${name}:${name} /var/octoprint
+USER ${name}
 
 #This fixes issues with the volume command setting wrong permissions
 RUN mkdir /var/octoprint/.octoprint
