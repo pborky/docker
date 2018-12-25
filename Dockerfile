@@ -23,7 +23,8 @@ RUN cd /tmp \
   && rm -Rf /tmp/*
 
 #Install Octoprint
-RUN pip install -e git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint 
+RUN pip install git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint \
+ && rm -rf /root/.cache/pip
 
 RUN groupadd -g ${gid} ${name} \
  && useradd -rNm -s /bin/bash -G dialout -g octoprint -d /var/octoprint -u ${uid} ${name}
