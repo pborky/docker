@@ -1,4 +1,4 @@
-# OctoPrint-docker [![Build Status](https://travis-ci.org/OctoPrint/docker.svg?branch=master)](https://travis-ci.org/OctoPrint/docker)
+# OctoPrint-docker 
 
 This repository contains everything you need to run [Octoprint](https://github.com/foosel/OctoPrint) in a docker environment on ARMHF.
 Image size is around 300MB.
