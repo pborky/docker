@@ -1,9 +1,21 @@
 #!/bin/bash
 
 . vars.sh 
+. functions.sh
 
-# get the group ids
-GIDS=$(get_gid $CONT_GROUPS)
+# get host volumes' and devices' gids
+VOL_GIDS=($(get_host_dir_groups $VOLUMES))
+DEV_GIDS=($(get_host_dir_groups $DEVICES))
+
+# get the group ids from group names
+GIDS=($(get_gid $CONT_GROUPS))
+
+# combine, sort, uniqe
+GIDS="$(merge_unique_int DEV_GIDS[@] VOL_GIDS[@] GIDS[@])"
+# change to coma separated string
+GIDS="${GIDS// /,}"
+
+echo GIDS: $GIDS
 
 BUILD_ARGS="\
           --build-arg home=$CONT_HOME \
