@@ -1,13 +1,19 @@
 
 FROM python:2.7-alpine
-EXPOSE 5000
 
 ARG tag=1.3.10
-ARG gid=666
-ARG uid=666
-ARG name=octoprint
+ARG git_repo=https://github.com/foosel/OctoPrint.git
 
-WORKDIR /var/octoprint
+# UID and GID of new user
+ARG uid=666
+ARG gid=666
+ARG user=octoprint
+# GIDs to grant access rights for the new user
+ARG gids=666
+# home directory
+ARG home=/var/octoprint
+
+WORKDIR $${home}
 
 # In case of alpine
 RUN apk update \
@@ -23,18 +29,24 @@ RUN apk update \
 #  && rm -Rf /tmp/*
 
 #Install Octoprint
-RUN pip install git+https://github.com/foosel/OctoPrint.git@${tag}#egg=OctoPrint \
+RUN pip install git+${git_repo}@${tag}#egg=OctoPrint \
  && rm -rf /root/.cache/pip
 
-# switch user
-RUN groupadd -g ${gid} ${name} \
- && useradd -rNm -s /bin/bash -G dialout -g octoprint -d /var/octoprint -u ${uid} ${name}
-RUN chown ${name}:${name} /var/octoprint
-USER ${name}
+# add new user and set groups
+RUN groupadd -g ${gid} ${user} \
+ && useradd -rNm -s /bin/bash -d ${home} -g ${user} -u ${uid} ${user} \
+ && for g in ${gids//,/ }; do \
+      echo "New group grp$g"; \
+      groupadd -g $g grp$g && usermod -aG grp$g ${user}; \
+    done
 
 #This fixes issues with the volume command setting wrong permissions
-RUN mkdir /var/octoprint/.octoprint
+RUN mkdir ${home}/.octoprint
+RUN chown -R ${name}:${name} ${home}
+VOLUME ${home}/.octoprint
 
-VOLUME /var/octoprint/.octoprint
+# switch user
+USER ${user}
 
-CMD ["/usr/local/bin/octoprint", "serve"]
+ENTRYPOINT ["/usr/local/bin/octoprint", "serve"]
+
