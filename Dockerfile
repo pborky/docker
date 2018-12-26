@@ -42,7 +42,7 @@ RUN groupadd -g ${gid} ${user} \
 
 #This fixes issues with the volume command setting wrong permissions
 RUN mkdir ${home}/.octoprint
-RUN chown -R ${name}:${name} ${home}
+RUN chown -R ${user}:${user} ${home}
 VOLUME ${home}/.octoprint
 
 # switch user
