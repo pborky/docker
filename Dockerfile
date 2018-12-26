@@ -2,7 +2,7 @@
 FROM python:2.7-alpine
 
 ARG tag=1.3.10
-ARG git_repo=https://github.com/foosel/OctoPrint.git
+ARG repo=https://github.com/foosel/OctoPrint.git
 
 # UID and GID of new user
 ARG uid=666
@@ -29,7 +29,7 @@ RUN apk update \
 #  && rm -Rf /tmp/*
 
 #Install Octoprint
-RUN pip install git+${git_repo}@${tag}#egg=OctoPrint \
+RUN pip install git+${repo}@${tag}#egg=OctoPrint \
  && rm -rf /root/.cache/pip
 
 # add new user and set groups
