@@ -9,7 +9,7 @@ ARG uid=666
 ARG gid=666
 ARG user=octoprint
 # GIDs to grant access rights for the new user
-ARG gids=666
+ARG gids=
 # home directory
 ARG home=/var/octoprint
 
